@@ -6,30 +6,30 @@ class WeatherProvider with ChangeNotifier {
   String? get currentTemperature => _currentTemperature;
   String? get currentPlace => _currentPlace;
   String? get weatherdes => _weatherdes;
-  String? get iconname => _iconname;
+  String? get iconurl => _iconurl;
   String? get bg => _bg;
   String _currentTemperature = '';
-  String _currentPlace = 'Pala';
+  String _currentPlace = 'Erattupetta';
   String? _weatherdes;
-  String? _iconname;
+  String? _iconurl;
   String? _bg;
   Future getWeather(String location) async {
-    String apiKey = 'b5dbe55df71688c5336483b4dc528a9a';
-    final url = Uri.parse('https://api.openweathermap.org/data/2.5/weather?q=$location&appid=$apiKey&units=metric');
+    String apiKey = '5cd33d63faea455b8f541806232003';
+    final url = Uri.parse(
+        'https://api.weatherapi.com/v1/current.json?key=$apiKey&q=$location');
     final response = await http.get(url);
     final data = jsonDecode(response.body);
-    _currentTemperature = data['main']['temp'].toStringAsFixed(0);
-    _currentPlace = data['name'].toString();
-    _weatherdes = data['weather'][0]['description'].toString();
+    _iconurl = "https:" + data["current"]["condition"]["icon"];
+    _currentTemperature = data['current']['temp_c'].toStringAsFixed(0);
+    _currentPlace = data['location']['name'].toString();
+    _weatherdes = data['current']['condition']['text'].toString();
     DateTime currentTime = DateTime.now();
     bool _isdaytime = currentTime.hour > 6 && currentTime.hour < 18;
     notifyListeners();
-
   }
+
   Future defaultLocation() async {
-
     getWeather(_currentPlace);
-
   }
 
   Future updateLocation(String newlocation) async {

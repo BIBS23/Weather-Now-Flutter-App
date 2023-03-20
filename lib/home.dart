@@ -13,6 +13,7 @@ class HomeUi extends StatefulWidget {
 
 class _HomeUiState extends State<HomeUi> {
   String? currentTemperature;
+    String? iconurl;
 
   String? clouds;
   bool expand = false;
@@ -55,6 +56,8 @@ class _HomeUiState extends State<HomeUi> {
               child: Padding(
                 padding: const EdgeInsets.only(top: 40, left: 100),
                 child: expand? TextField(
+            
+                
 
                   onSubmitted: (newloc) {
                     Provider.of<WeatherProvider>(context, listen: false).updateLocation(newloc);
@@ -117,7 +120,7 @@ class _HomeUiState extends State<HomeUi> {
           weatherProvider.currentTemperature.toString();
           String currentPlace = weatherProvider.currentPlace.toString();
           String weatherdes = weatherProvider.weatherdes.toString();
-          String? iconname = weatherProvider.iconname;
+          String? iconurl = weatherProvider.iconurl;
           return Stack(children: [
             Container(
               height: MediaQuery.of(context).size.height,
@@ -178,7 +181,15 @@ class _HomeUiState extends State<HomeUi> {
                     ),
                   ),
                 )
-              )
+              ),
+
+             Positioned(
+                top: 50,
+                left: 130,
+                right: 0,
+               child: Image(image: NetworkImage(iconurl.toString()),width: 100,height: 100,),
+             ),
+              
             ]
           );
         }
